@@ -7,6 +7,8 @@
     <title>Laracasts</title>
 </head>
 <body>
-<h1>Test complete {{ $name }}</h1>
+<h1>My blog post</h1>
+
+<h3> {{ $name->body }} </h3>
 </body>
 </html>
