@@ -13,25 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('test/{poster}', 'PostsController@show');
+Route::get('/articles', 'ArticlesController@index');
 
-Route::get('/about', function () {
-    return view('about');
-});
+Route::get('/articles/create', 'ArticlesController@create');
 
-Route::get('/', function () {
-    return [
-        'name' => 'value',
-        'multi' => [
-            'another'
-        ]
-    ];
-});
+Route::post('/articles', 'ArticlesController@store');
+
+Route::get('/articles/{article}/edit', 'ArticlesController@edit');
+
+Route::get('/articles/{article}', 'ArticlesController@show');
 
 Route::get('/homepage', function () {
     return view('index');
 });
 
-Auth::routes();
+Route::get('/about', function () {
+    $articles = App\Article::take(3)->latest()->get();
 
-Route::get('/home', 'HomeController@index')->name('home');
+    return view('about', ['articles' => $articles]);
+});
