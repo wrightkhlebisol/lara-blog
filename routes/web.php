@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('test/{poster}', 'PostsController@show');
 
+Route::get('/about', function () {
+    return view('about');
+});
+
 Route::get('/', function () {
     return [
         'name' => 'value',
@@ -24,8 +28,8 @@ Route::get('/', function () {
     ];
 });
 
-Route::get('/fetchtest', function () {
-    return 'Name';
+Route::get('/homepage', function () {
+    return view('index');
 });
 
 Auth::routes();
