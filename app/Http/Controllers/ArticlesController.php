@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Tag;
 use Illuminate\Http\Request;
 
 class ArticlesController extends Controller
@@ -10,7 +11,11 @@ class ArticlesController extends Controller
     //
     public function index()
     {
-        $articles = Article::paginate(5);
+        if (request('tag')) {
+            $articles = Tag::where('name', request('tag'))->firstOrFail()->articles;
+        } else {
+            $articles = Article::latest(5)->get();
+        }
         // return $articles;
 
         return view('articles.index', ['articles' => $articles]);
@@ -28,21 +33,11 @@ class ArticlesController extends Controller
 
     public function store()
     {
-        request()->validate([
-            'title' => 'required',
-            'excerpt' => 'required',
-            'body' => 'required'
-        ]);
+        $validatedRequest = $this->validateRequest();
 
-        $article = new Article();
+        Article::create($validatedRequest);
 
-        $article->title = request('title');
-        $article->excerpt = request('excerpt');
-        $article->body = request('body');
-
-        $article->save();
-
-        return redirect('/articles');
+        return redirect(route('articles.all'));
     }
 
     public function edit(Article $article)
@@ -53,24 +48,24 @@ class ArticlesController extends Controller
 
     public function update(Article $article)
     {
-        request()->validate([
-            'title' => 'required',
-            'excerpt' => 'required',
-            'body' => 'required'
-        ]);
+        $validatedRequest = $this->validateRequest();
         // Update the resource
+        $article->update($validatedRequest);
 
-        $article->title = request()->title;
-        $article->excerpt = request()->excerpt;
-        $article->body = request()->body;
-
-        $article->save();
-
-        return redirect("/articles/$id");
+        return redirect($article->path());
     }
 
     public function destroy()
     {
         // Delete the resource
+    }
+
+    public function validateRequest()
+    {
+        return request()->validate([
+            'title' => 'required',
+            'excerpt' => 'required',
+            'body' => 'required'
+        ]);
     }
 }
