@@ -14,7 +14,7 @@ class ArticlesController extends Controller
         if (request('tag')) {
             $articles = Tag::where('name', request('tag'))->firstOrFail()->articles;
         } else {
-            $articles = Article::latest(5)->get();
+            $articles = Article::latest()->get();
         }
         // return $articles;
 
@@ -28,16 +28,22 @@ class ArticlesController extends Controller
 
     public function create()
     {
-        return view('articles.create');
+        $tags = Tag::all();
+        return view('articles.create', ['tags' => $tags]);
     }
 
     public function store()
     {
-        $validatedRequest = $this->validateRequest();
+        $this->validateRequest();
 
-        Article::create($validatedRequest);
+        $article = new Article(request(['title', 'excerpt', 'body']));
+        $article->user_id = 1;
 
-        return redirect(route('articles.all'));
+        $article->save();
+
+        $article->tags()->attach(request('tags'));
+
+        return redirect(route('articles.index'));
     }
 
     public function edit(Article $article)
@@ -63,9 +69,10 @@ class ArticlesController extends Controller
     public function validateRequest()
     {
         return request()->validate([
-            'title' => 'required',
-            'excerpt' => 'required',
-            'body' => 'required'
+            'title'     => 'required',
+            'excerpt'   => 'required',
+            'body'      => 'required',
+            'tags'      => 'exists:tags,id'
         ]);
     }
 }

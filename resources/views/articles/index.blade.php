@@ -3,7 +3,7 @@
 @section('content')
 <div id="wrapper">
 	<div id="page" class="container">
-        @foreach ($articles as $article)
+        @forelse ($articles as $article)
 		<div id="content">
             <div class="title">
                 <h2>
@@ -12,16 +12,19 @@
             </div>
             <p>
                 @foreach ($article->tags as $tag)
-                    <a href="/articles?tag={{$tag->name}}">{{$tag->name}}</a>
+                    <a href="{{ route('articles.index', ['tag' => $tag->name]) }}">{{$tag->name}}</a>
                 @endforeach
             </p>
             <p>
                 <img src="{{asset('images/banner.jpg')}}" alt="" class="image image-full" />
             </p>
 			<p>{{$article->excerpt}}</p>
-		</div>
-        @endforeach
-	</div>
+        </div>
+        @empty
+            <p>No relevant articles yet.</p>
+        @endforelse
+    </div>
+    @if ($articles)
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             <li class="page-item disabled">
@@ -44,6 +47,7 @@
             </li>
         </ul>
     </nav>
+    @endif
     {{-- {{ $article->links() }} --}}
 </div>
 @endsection
