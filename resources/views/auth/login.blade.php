@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('style')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.8.2/css/bulma.min.css">
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

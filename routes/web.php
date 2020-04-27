@@ -26,12 +26,16 @@ Route::get('/articles/{article}/edit', 'ArticlesController@edit')->name('article
 Route::put('/articles/{article}', 'ArticlesController@update')->name('articles.update');
 
 
-Route::get('/homepage', function () {
+Route::get('/', function () {
     return view('index');
-});
+})->name('articles.home');
 
 Route::get('/about', function () {
     $articles = App\Article::take(3)->latest()->get();
 
     return view('about', ['articles' => $articles]);
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
