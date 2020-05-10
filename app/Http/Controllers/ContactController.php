@@ -35,11 +35,11 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
         //
         request()->validate(['email' => 'required|email']);
-        Mail::to($request('email'))->send(new ContactMe('shirts'));
+        Mail::to(request('email'))->send(new ContactMe('shirts'));
 
         return redirect('/contact')->with('message', 'Email Sent');
     }

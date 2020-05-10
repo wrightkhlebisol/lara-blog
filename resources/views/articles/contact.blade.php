@@ -46,6 +46,6 @@
     <button type="submit" class="bg-blue-500">
         Email Me
     </button>
-
+<p style="color:green">{{session('message') }}</p>
 </form>
 @endsection
