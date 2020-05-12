@@ -58,4 +58,5 @@ class InvoicePaid extends Notification
             //
         ];
     }
+
 }
