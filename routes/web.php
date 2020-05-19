@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/articles', 'ArticlesController@index')->name('articles.index');
 
+Route::get('/projects/create', 'ProjectController@create')->name('project.create');
+
 Route::get('/contact', 'ContactController@index');
 
 Route::post('/contact', 'ContactController@store');
